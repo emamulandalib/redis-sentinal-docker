@@ -3,34 +3,49 @@ version: "3.7"
 services: 
     redis-master:
         image: redis:6-alpine
-        container_name: redis-master
+        container_name: redis-master-sentinel
         networks: 
             redis-sentinel:
         volumes: 
             - ./data/master:/data
             - ./conf/master.conf:/usr/local/etc/redis/redis.conf
         command: redis-server /usr/local/etc/redis/redis.conf
+        restart: always
     
     redis-slave:
         image: redis:6-alpine
-        container_name: redis-slave
+        container_name: redis-slave-sentinel
         networks: 
             redis-sentinel:
         volumes: 
             - ./data/slave:/data
             - ./conf/slave.conf:/usr/local/etc/redis/redis.conf
         command: redis-server /usr/local/etc/redis/redis.conf
+        restart: always
     
     redis-sentinel:
         build: 
             context: .
             dockerfile: sentinel.Dockerfile
-        container_name: redis-sentinel
+        container_name: redis-sentinel-sentinel
         networks: 
             redis-sentinel:
         ports: 
             - 26379:26379
+        restart: always
 
+    redis-commander:
+        image: rediscommander/redis-commander:latest
+        container_name: redis-commander-sentinel
+        networks: 
+            - redis-sentinel
+        ports:
+            - 8081:8081
+        environment:
+            SENTINEL_HOST: redis-sentinel-sentinel
+            SENTINEL_NAME: master
+            REDIS_PASSWORD: f81e8c52d71acd9d5259c47aa449810030d882d0d120e32a45039a86c97f6f9c
+        restart: always
 
 networks: 
     redis-sentinel:
