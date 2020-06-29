@@ -20,6 +20,16 @@ services:
             - ./data/slave:/data
             - ./conf/slave.conf:/usr/local/etc/redis/redis.conf
         command: redis-server /usr/local/etc/redis/redis.conf
+    
+    redis-sentinel:
+        build: 
+            context: .
+            dockerfile: sentinel.Dockerfile
+        container_name: redis-sentinel
+        networks: 
+            redis-sentinel:
+        ports: 
+            - 26379:26379
 
 
 networks: 
