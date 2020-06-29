@@ -6,12 +6,11 @@ services:
             context: .
             dockerfile: dockerfiles/master.Dockerfile
         container_name: redis-master-sentinel
-        network_mode: host
         volumes: 
             - ./data/master:/data
-        environment: 
-            PASSWORD: secret
-            PORT: 6379
+        ports: 
+            - 6379:6379
+        env_file: .env
         # restart: always
     
     redis-slave:
@@ -19,15 +18,11 @@ services:
             context: .
             dockerfile: dockerfiles/slave.Dockerfile
         container_name: redis-slave-sentinel
-        network_mode: host
+        ports: 
+            - 6380:6379
         volumes: 
             - ./data/slave:/data
-        environment: 
-            HOST_IP: 192.168.68.100
-            MASTER_PORT: 6379
-            MASTER_PASSWORD: secret
-            PASSWORD: secret
-            PORT: 6380
+        env_file: .env
         # restart: always
     
     # redis-sentinel:
