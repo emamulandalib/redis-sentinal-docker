@@ -25,13 +25,14 @@ services:
         env_file: .env
         # restart: always
     
-    # redis-sentinel:
-    #     build: 
-    #         context: .
-    #         dockerfile: sentinel.Dockerfile
-    #     container_name: redis-sentinel-sentinel
-    #     ports: 
-    #         - 26379:26379
+    redis-sentinel:
+        build: 
+            context: .
+            dockerfile: dockerfiles/sentinel.Dockerfile
+        container_name: redis-sentinel-sentinel
+        env_file: .env
+        ports: 
+            - 26379:26379
     #     # restart: always
 
     # redis-commander:
