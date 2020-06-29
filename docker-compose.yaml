@@ -23,7 +23,7 @@ services:
         volumes: 
             - ./data/slave:/data
         environment: 
-            HOST_IP: 192.168.4.91
+            HOST_IP: 192.168.68.100
             MASTER_PORT: 6379
             MASTER_PASSWORD: secret
             PASSWORD: secret
