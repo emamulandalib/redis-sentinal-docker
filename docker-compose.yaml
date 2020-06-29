@@ -35,13 +35,12 @@ services:
             - 26379:26379
     #     # restart: always
 
-    # redis-commander:
-    #     image: rediscommander/redis-commander:latest
-    #     container_name: redis-commander-sentinel
-    #     ports: 
-    #         - 8081:8081
-    #     environment:
-    #         SENTINEL_HOST: 192.168.4.91
-    #         SENTINEL_NAME: master
-    #         REDIS_PASSWORD: f81e8c52d71acd9d5259c47aa449810030d882d0d120e32a45039a86c97f6f9c
+    redis-commander:
+        build: 
+            context: .
+            dockerfile: dockerfiles/client.Dockerfile
+        container_name: redis-commander-sentinel
+        ports: 
+            - 8081:8081
+        env_file: .env
     #     restart: always
